@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-user
+      author: mamadiyevsayyod5@gmail.com
+      changes:
+        - sqlFile:
+            path: create-user.sql
+            relativeToChangelogFile: true

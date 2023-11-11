@@ -1,0 +1,4 @@
+databaseChangeLog:
+  - include:
+      file: 10.11.2023-create-user/create-user.yaml
+      relativeToChangelogFile: true
