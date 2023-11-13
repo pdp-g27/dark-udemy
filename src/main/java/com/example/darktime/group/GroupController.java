@@ -4,6 +4,7 @@ import com.example.darktime.group.dto.GroupCreateDto;
 import com.example.darktime.group.dto.GroupRequestDto;
 import com.example.darktime.group.dto.GroupResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +34,7 @@ public class GroupController {
     }
     @PutMapping("/{groupId}")
     public GroupResponseDto update(@PathVariable UUID groupId,
-                                   @RequestBody GroupRequestDto groupRequestDto){
-        return groupService.update(groupId,groupRequestDto);
+                                   @RequestBody GroupRequestDto groupRequestDto, ModelMapper modelMapper){
+        return groupService.update(groupId,groupRequestDto,modelMapper);
     }
 }
