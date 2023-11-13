@@ -4,7 +4,9 @@ import com.example.darktime.group.dto.GroupCreateDto;
 import com.example.darktime.group.dto.GroupRequestDto;
 import com.example.darktime.group.dto.GroupResponseDto;
 import com.example.darktime.group.entity.Group;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class GroupService {
     private final GroupRepository groupRepository;
+
     public GroupResponseDto create(GroupCreateDto groupCreateDto) {
         Group group = new Group();
         group.setName(groupCreateDto.getName());
@@ -28,7 +31,7 @@ public class GroupService {
         List<Group> all = groupRepository.findAll();
         return all
                 .stream()
-                .map(group -> new GroupResponseDto(group.getUuid(),group.getName()))
+                .map(group -> new GroupResponseDto(group.getUuid(), group.getName()))
                 .toList();
 
     }
@@ -41,18 +44,16 @@ public class GroupService {
 
 
     public GroupResponseDto delete(UUID groupId) {
-      groupRepository.deleteById(groupId);
-      return null;
+        groupRepository.deleteById(groupId);
+        return null;
     }
 
-    public GroupResponseDto update(UUID groupId, GroupRequestDto groupRequestDto) {
-        Optional<Group> optionalGroup = groupRepository.findById(groupId);
-        if (optionalGroup.isPresent()) {
-            Group group = optionalGroup.get();
-            group.setName(groupRequestDto.getName());
-            Group saved = groupRepository.save(group);
-            return new GroupResponseDto(saved.getUuid(), saved.getName());
-        }
-        return null;
+    public GroupResponseDto update(UUID id, GroupRequestDto requestDto, ModelMapper modelMapper) {
+
+        Group group = groupRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Not Found"));
+        modelMapper.map(requestDto, group);
+        return modelMapper.map(groupRepository.save(group), GroupResponseDto.class);
+
+
     }
 }
