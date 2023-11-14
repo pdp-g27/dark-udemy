@@ -1,40 +1,52 @@
 package com.example.darktime.group;
 
 import com.example.darktime.group.dto.GroupCreateDto;
-import com.example.darktime.group.dto.GroupRequestDto;
 import com.example.darktime.group.dto.GroupResponseDto;
+import com.example.darktime.group.dto.GroupUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 
-@Controller
+@RestController
 @RequestMapping("/group")
 @RequiredArgsConstructor
 public class GroupController {
     private final GroupService groupService;
+
     @PostMapping
-    public GroupResponseDto create(@RequestBody GroupCreateDto groupCreateDto){
-        return groupService.create(groupCreateDto);
+    public ResponseEntity<GroupResponseDto> createUser(@RequestBody GroupCreateDto createDto) {
+        GroupResponseDto responseDto = groupService.create(createDto);
+        return ResponseEntity.ok(responseDto);
     }
+
     @GetMapping
-    public List<GroupResponseDto> getAll(){
-        return groupService.getAll();
+    public ResponseEntity<Page<GroupResponseDto>> getUsers(Pageable pageable, @RequestParam(required = false) String predicate) {
+        Page<GroupResponseDto> responseDto = groupService.getAll(pageable, predicate);
+        return ResponseEntity.ok(responseDto);
     }
-    @GetMapping("/{groupId}")
-    public GroupResponseDto get(@PathVariable("groupId") UUID uuid){
-        return groupService.get(uuid);
+
+    @GetMapping("/{id}")
+    public ResponseEntity<GroupResponseDto> getUser(@PathVariable UUID id) {
+        GroupResponseDto responseDto = groupService.getById(id);
+        return ResponseEntity.ok(responseDto);
     }
-    @DeleteMapping("/{groupId}")
-    public GroupResponseDto delete(@PathVariable("groupId") UUID uuid){
-        return groupService.delete(uuid);
+
+    @PutMapping("/{id}")
+    public ResponseEntity<GroupResponseDto> updateUser(@PathVariable UUID id, @RequestBody GroupUpdateDto updateDto) {
+        GroupResponseDto responseDto = groupService.update(id, updateDto);
+        return ResponseEntity.ok(responseDto);
     }
-    @PutMapping("/{groupId}")
-    public GroupResponseDto update(@PathVariable UUID groupId,
-                                   @RequestBody GroupRequestDto groupRequestDto, ModelMapper modelMapper){
-        return groupService.update(groupId,groupRequestDto,modelMapper);
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable UUID id) {
+        groupService.delete(id);
+        return ResponseEntity.ok("DELETED");
     }
 }
