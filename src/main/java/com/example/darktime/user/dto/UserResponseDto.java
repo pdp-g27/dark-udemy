@@ -1,18 +1,16 @@
 package com.example.darktime.user.dto;
 
-import com.example.darktime.user.entity.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
+import java.util.UUID;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
-public class UserResponseDto {
-    private String firstName;
-    private String lastName;
-    private String middleName;
-    private UserType userType;
-    private String phoneNumber;
-    private String email;
-    private String password;
+@NoArgsConstructor
+public class UserResponseDto extends UserBaseDto {
+    private UUID id;
 }

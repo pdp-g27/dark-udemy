@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-user
+      author: rikhsiboyev@gmail.com
+      changes:
+        - sqlFile:
+            relativeToChangelogFile: true
+            path: create-user-group.sql

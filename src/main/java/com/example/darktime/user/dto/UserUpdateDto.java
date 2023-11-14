@@ -1,4 +1,12 @@
 package com.example.darktime.user.dto;
 
-public class UserUpdateDto {
+
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+
+
+@EqualsAndHashCode(callSuper = true)
+@AllArgsConstructor
+public class UserUpdateDto extends UserBaseDto {
+
 }

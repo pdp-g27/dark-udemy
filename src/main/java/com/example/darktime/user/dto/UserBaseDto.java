@@ -3,13 +3,15 @@ package com.example.darktime.user.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserCreateDto extends UserBaseDto {
-    private String password;
+public class UserBaseDto {
+    private String firstName;
+    private String lastName;
+    private String middleName;
+    private String phoneNumber;
+    private String email;
 }
